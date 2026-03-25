@@ -967,6 +967,7 @@ footer {
   .ff-photo img, .ff-photo-wide img, .ff-research-row .ff-photo img { height: 180px; }
 }
 
+@keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
@@ -2175,4 +2176,24 @@ document.querySelectorAll('.project-card').forEach(card => {
     const y = (e.clientY - r.top) / r.height - 0.5;
     card.style.transform = `translateY(-3px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg)`;
   });
-  card.ad
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+
+// Scroll reveal for non-foodflow pages
+const revealEls = document.querySelectorAll('.reveal');
+if (revealEls.length) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+}
+</script>
+</body>
+</html>
