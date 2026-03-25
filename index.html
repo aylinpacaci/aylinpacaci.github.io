@@ -1556,10 +1556,10 @@ footer {
     <h1 class="contact-heading">Let's build something <em>meaningful</em> together.</h1>
 
     <div class="contact-links">
-      <a href="mailto:pacaciaylin@gmail.com" class="contact-link-item">
+      <a href="/cdn-cgi/l/email-protection#5f2f3e3c3e3c363e263336311f38323e3633713c3032" class="contact-link-item">
         <div>
           <p class="contact-link-label">Email</p>
-          <p class="contact-link-value">pacaciaylin@gmail.com</p>
+          <p class="contact-link-value"><span class="__cf_email__" data-cfemail="5929383a383a303820353037193e34383035773a3634">[email&#160;protected]</span></p>
         </div>
         <div class="contact-arrow">↗</div>
       </a>
@@ -2037,9 +2037,9 @@ footer {
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Page routing
-function showPage(pageId) {
+function showPage(pageId, pushState) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + pageId).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'instant' });
@@ -2050,6 +2050,11 @@ function showPage(pageId) {
   if (pageId === 'foodflow') {
     setTimeout(initReveal, 60);
   }
+  // Update URL hash
+  if (pushState !== false) {
+    const hash = pageId === 'home' ? '' : '#' + pageId;
+    history.pushState({ page: pageId }, '', hash || window.location.pathname);
+  }
 }
 
 function showCase(id) { showPage(id); }
@@ -2058,6 +2063,29 @@ function navTo(sectionId) {
   showPage('home');
   setTimeout(() => scrollToSection(sectionId), 80);
 }
+
+// Handle browser back/forward
+window.addEventListener('popstate', (e) => {
+  const pageId = (e.state && e.state.page) || getPageFromHash();
+  showPage(pageId, false);
+});
+
+// Read page from URL hash on load
+function getPageFromHash() {
+  const hash = window.location.hash.replace('#', '');
+  const validPages = ['home', 'contact', 'aida', 'globalfund', 'foodflow', 'enione', 'nhs', 'glocal'];
+  return (hash && validPages.includes(hash)) ? hash : 'home';
+}
+
+// Init from URL on page load
+(function() {
+  const pageId = getPageFromHash();
+  if (pageId !== 'home') {
+    showPage(pageId, false);
+  } else {
+    history.replaceState({ page: 'home' }, '', window.location.pathname);
+  }
+})();
 
 function scrollToSection(id) {
   const el = document.getElementById(id);
@@ -2147,13 +2175,4 @@ document.querySelectorAll('.project-card').forEach(card => {
     const y = (e.clientY - r.top) / r.height - 0.5;
     card.style.transform = `translateY(-3px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg)`;
   });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
-    card.style.transition = 'transform 0.4s ease, box-shadow 0.3s, border-color 0.3s';
-    setTimeout(() => card.style.transition = '', 400);
-  });
-});
-</script>
-
-</body>
-</html>
+  card.ad
